@@ -15,11 +15,6 @@ repos:
       - id: run-just-rust
         alias: run-just-precommit
         name: just (lints)
-        args: ['precommit']
-        stages: [pre-commit]
-      - id: run-just-rust
-        alias: run-just-precommit-ci
-        name: just (lints) - CI
         args: ['precommit-ci']
         stages: [pre-commit]
       - id: run-just-rust
