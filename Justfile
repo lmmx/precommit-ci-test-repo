@@ -5,7 +5,7 @@ lint:
 
 lint-ci:
    echo "running lints: CI"
-   debug-env
+   just debug-env
    exit 1 # fail on purpose to show env vars on CI
 
 test:
