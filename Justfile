@@ -5,8 +5,6 @@ lint:
 
 lint-ci:
    echo "running lints: CI"
-   just debug-env-values
-   exit 1 # fail on purpose to show env vars on CI
 
 test:
    echo "running push tests: LOCAL"
@@ -14,16 +12,19 @@ test:
 test-ci:
    echo "running push tests: CI"
 
-# Readable output of env vars beginning with `PRE`
-debug-env:
-   env | cut -d'=' -f1 | sort | xargs echo | tr ' ' ','
+# Auto-detect CI vs local based on PRE_COMMIT_HOME
+precommit:
+   #!/usr/bin/env bash
+   if [ -n "$PRE_COMMIT_HOME" ]; then
+       just lint-ci
+   else
+       just lint
+   fi
 
-# Readable output of env vars beginning with `PRE` and their values
-debug-env-values:
-   env | sort | while IFS='=' read -r key value; do echo "$key: $value"; done
-
-precommit:    lint
-precommit-ci: lint-ci
-
-prepush:      test
-prepush-ci:   test-ci debug-env
+prepush:
+   #!/usr/bin/env bash
+   if [ -n "$PRE_COMMIT_HOME" ]; then
+       just test-ci
+   else
+       just test
+   fi
