@@ -1,5 +1,13 @@
 default: lint
 
+ci_opt := if env("PRE_COMMIT_HOME", "") != "" { "-ci" } else { "" }
+
+precommit:
+    just lint{{ci_opt}}
+
+prepush:
+    just test{{ci_opt}}
+
 lint:
    echo "running lints: LOCAL"
 
@@ -11,20 +19,3 @@ test:
 
 test-ci:
    echo "running push tests: CI"
-
-# Auto-detect CI vs local based on PRE_COMMIT_HOME
-precommit:
-   #!/usr/bin/env bash
-   if [ -n "$PRE_COMMIT_HOME" ]; then
-       just lint-ci
-   else
-       just lint
-   fi
-
-prepush:
-   #!/usr/bin/env bash
-   if [ -n "$PRE_COMMIT_HOME" ]; then
-       just test-ci
-   else
-       just test
-   fi
