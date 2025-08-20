@@ -13,11 +13,9 @@ lint:
 
 lint-ci:
    echo "running lints: CI"
-   exit 1 # Make CI fail
 
 test:
    echo "running push tests: LOCAL"
 
 test-ci:
    echo "running push tests: CI"
-   exit 1 # Make CI fail
